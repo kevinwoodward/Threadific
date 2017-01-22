@@ -1,7 +1,12 @@
 package com.woodward.threadific;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -10,15 +15,18 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -26,9 +34,19 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import static android.R.attr.value;
+import static org.opencv.core.CvType.CV_8U;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, CameraBridgeViewBase.CvCameraViewListener2 {
@@ -39,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     }
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
-
+    private GestureDetectorCompat mDetector;
     Mat mRgba;
     JavaCameraView mJavaCameraView;
     BaseLoaderCallback mBaseLoaderCallback = new BaseLoaderCallback(this) {
@@ -80,7 +98,17 @@ public class MainActivity extends AppCompatActivity
         mJavaCameraView = (JavaCameraView)findViewById(R.id.java_camera_view);
         mJavaCameraView.setVisibility(SurfaceView.VISIBLE);
         mJavaCameraView.setCvCameraViewListener(this);
+
     }
+
+    /*public void setUpCaptureButton() {
+        Button button = (Button)findViewById(R.id.capture_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+    }*/
 
     @Override
     protected void onPause() {
@@ -123,7 +151,6 @@ public class MainActivity extends AppCompatActivity
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
-                //insert webview func
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
@@ -185,6 +212,42 @@ public class MainActivity extends AppCompatActivity
         mRgba = inputFrame.rgba();
         return mRgba;
     }
+
+    /*@Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        *//*int action = event.getAction();
+
+        View v = getCurrentFocus();
+        boolean ret = super.dispatchTouchEvent(event);
+        Imgproc.resize(mRgba, mRgba, new Size() , 1, 2, 0);
+        Bitmap bmp;
+        bmp = Bitmap.createBitmap(mRgba.width(), mRgba.height(), Bitmap.Config.ARGB_8888);
+
+        Utils.matToBitmap(mRgba, bmp);
+        long time = System.currentTimeMillis();
+        String fileName = Environment.getExternalStorageDirectory().getPath() + "/sample_picture_" + time + ".jpg";
+        Log.i(TAG, fileName);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(fileName);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;*//*
+        return false;
+    }*/
+
+
 
     /*public Mat rgba () {
         Imgproc.cvtColor(mRgba, mRgba, Imgproc.COLOR_YUV2BGR_NV12);
