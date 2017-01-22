@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Threadific</string>
 
-    <string name="title_section1">WebView Test</string>
+    <string name="title_section1">Blob</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 

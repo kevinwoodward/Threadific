@@ -29,11 +29,7 @@
         android:layout_height="match_parent"
         android:id="@+id/java_camera_view"
     />
-    <Button
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:text="@string/capture_button"
-        android:background="#00FFFFFF"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
